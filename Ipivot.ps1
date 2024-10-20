@@ -20,9 +20,7 @@ Write-Output "
     Description: A little pivoting tool for when your favourite meterpreter shell fails...
     Prequisites: Identify and Gain Initial Foothold on Target as Administrator
     
-    PS: If you happen to find this tool useful then I wouldn't mind a mention ;)
-
-	set Set-ExecutionPolicy RemoteSigned -Scope Process if you can't run scripts on target powershell cli                 
+    PS: If you happen to find this tool useful then I wouldn't mind a mention ;)              
  ******************************************************************************* 
  "
 
@@ -56,7 +54,7 @@ $(Foreach ($add in $range)
             Write-Progress "Forwarding from listening $LisAddr and $LisPort to target\n"
 			Write-Output "Forwarding from listening $LisAddr and $LisPort to target......."
 
-			Write-Output "________________________________________________________"
+			Write-Output "____________________________________________________________________________________________________________________________"
 			#piece of the script that does the forwarding
             Invoke-Expression "netsh interface portproxy add v4tov4 listenaddress=$($LisAddr) listenport=$($LisPort) connectaddress=$($ip) connectport=$($Conport)"
             
@@ -65,7 +63,7 @@ $(Foreach ($add in $range)
 			#verify that the port is listening
             Get-NetTCPConnection -LocalPort $LisPort
 			Get-NetTCPConnection -LocalPort $ConPort
-			Write-Output "*******************************************************************************"
+			Write-Output "***************************************************************************************************************************"
             $socket.Close() 
         }
         else 
