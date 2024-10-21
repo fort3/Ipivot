@@ -1,3 +1,27 @@
+<#
+.PARAMETER ConnectingPort
+Change this to the connecting port 
+
+.PARAMETER ListeningPort
+Change this to the listening port 
+
+.PARAMETER ListeningAddress
+Change this to the listening IP address you want to set the forwarding to 
+
+.PARAMETER Network
+Change this to the target network you're working on i.e 192.168.0 
+
+.PARAMETER HostRange
+Change this to determine the range or leave as default depending on your needs
+#>
+param (
+    [int]$ConnectingPort = 9080,
+    [int]$ListeningPort = 9999,
+    [string]$ListeningAddress = '127.0.0.1',
+    [string]$Network = '192.168.1',
+    [int[]]$HostRange = 1..10
+)
+
 Write-Output "
 ****************************************************************************                      
               # # # # # # #
@@ -24,51 +48,34 @@ Write-Output "
  ******************************************************************************* 
  "
 
-#Change this to the connecting port 
-$Conport = (9080)
-
-#Change this to the listening port 
-$LisPort = (9999)
-
-#Change this to the listening IP address you want to set the forwarding to 
-$LisAddr = "127.0.0.1"
-
-#Change this to the target network you're working on i.e 192.168.0 
-$network = "127.0.0"
-
-#Change this to determine the range or leave as default depending on your needs
-$range = 1..10
-
-$ErrorActionPreference= 'silentlycontinue'
-
 #list the network and ports found and apply the forwarding
-$(Foreach ($add in $range)
-{ 
-    $ip = "{0}.{1}" -F $network,$add
-    Write-Progress "Scanning Network" $ip -PercentComplete (($add/$range.Count)*100)
-    If(Test-Connection -BufferSize 32 -Count 1 -quiet -ComputerName $ip)
-    {
-        $socket = new-object System.Net.Sockets.TcpClient($ip, $Conport)
-        If($socket.Connected) 
-        { "$ip port $Conport is open"
-            Write-Progress "Forwarding from listening $LisAddr and $LisPort to target\n"
-			Write-Output "Forwarding from listening $LisAddr and $LisPort to target......."
+$i = 1
+foreach ($host in $HostRange) {
+    $ip = "{0}.{1}" -f $network, $host
+    Write-Progress "Scanning Network" $ip -PercentComplete (($i / $HostRange.Count) * 100)
+    If (Test-Connection -BufferSize 32 -Count 1 -quiet -ComputerName $ip) {
+        $socket = [System.Net.Sockets.TcpClient]::New($ip, $ConnectingPort)
+        If ($socket.Connected) {
+            "$ip port $ConnectingPort is open"
+            Write-Progress "Forwarding from listening ${ListeningAddress}:$ListeningPort to target`n"
+            Write-Output "Forwarding from listening ${ListeningAddress}:$ListeningPort to target......."
 
-			Write-Output "____________________________________________________________________________________________________________________________"
-			#piece of the script that does the forwarding
-            Invoke-Expression "netsh interface portproxy add v4tov4 listenaddress=$($LisAddr) listenport=$($LisPort) connectaddress=$($ip) connectport=$($Conport)"
-            
-			Write-Progress "Checking if host is listening on port $LisPort and $ConPort\n"
-			Write-Output "Checking if host is listening on port $LisPort and $ConPort"
-			#verify that the port is listening
-            Get-NetTCPConnection -LocalPort $LisPort
-			Get-NetTCPConnection -LocalPort $ConPort
-			Write-Output "***************************************************************************************************************************"
+            Write-Output "____________________________________________________________________________________________________________________________"
+            #piece of the script that does the forwarding
+            try {
+                "netsh interface portproxy add v4tov4 listenaddress=$($ListeningAddress) listenport=$($ListeningPort) connectaddress=$($ip) connectport=$($ConnectingPort)"
+            } catch {
+                Write-Warning "Could not forward ${ListeningAddress}:$ListeningPort to target......."
+            }
+            Write-Progress "Checking if host is listening on port $ListeningPort and $ConnectingPort`n"
+            Write-Output "Checking if host is listening on port $ListeningPort and $ConnectingPort"
+            #verify that the port is listening
+            Get-NetTCPConnection -LocalPort $ListeningPort
+            Get-NetTCPConnection -LocalPort $ConnectingPort
+            Write-Output "***************************************************************************************************************************"
             $socket.Close() 
+        } else { 
+            "$ip port $ConnectingPort is not open "
         }
-        else 
-        { 
-            "$ip port $Conport is not open "
-        }
-	}
-})
+    }
+}
