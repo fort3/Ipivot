@@ -25,19 +25,19 @@ Write-Output "
  "
 
 #Change this to the connecting port 
-$Conport = (9080)
+$Conport = (139)
 
 #Change this to the listening port 
 $LisPort = (9999)
 
 #Change this to the listening IP address you want to set the forwarding to 
-$LisAddr = "127.0.0.1"
+$LisAddr = "192.168.1.167"
 
 #Change this to the target network you're working on i.e 192.168.0 
-$network = "127.0.0"
+$network = "192.168.1"
 
 #Change this to determine the range or leave as default depending on your needs
-$range = 1..10
+$range = 100..254
 
 $ErrorActionPreference= 'silentlycontinue'
 
@@ -56,7 +56,7 @@ $(Foreach ($add in $range)
 
 			Write-Output "____________________________________________________________________________________________________________________________"
 			#piece of the script that does the forwarding
-            Invoke-Expression "netsh interface portproxy add v4tov4 listenaddress=$($LisAddr) listenport=$($LisPort) connectaddress=$($ip) connectport=$($Conport)"
+           # Invoke-Expression "netsh interface portproxy add v4tov4 listenaddress=$($LisAddr) listenport=$($LisPort) connectaddress=$($ip) connectport=$($Conport)"
             
 			Write-Progress "Checking if host is listening on port $LisPort and $ConPort\n"
 			Write-Output "Checking if host is listening on port $LisPort and $ConPort"
