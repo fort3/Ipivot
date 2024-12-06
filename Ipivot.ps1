@@ -42,6 +42,7 @@ Write-Output "
     
     IPIVOT 2.0 - Red Teaming Tool
     By: @fort3 - Fortune Sam Okon
+        @TrimarcJake - Jake Hildreth
     Description: A little pivoting tool for when your favourite meterpreter shell fails...
     Prequisites: Identify and Gain Initial Foothold on Target as Administrator
     
