@@ -27,19 +27,19 @@
 Change the Parameters below depending on your needs:
 
 PARAMETER ConnectingPort
-Change this to the connecting port 
+  #Change this to the connecting port 
 
 PARAMETER ListeningPort
-Change this to the listening port 
+  #Change this to the listening port 
 
 PARAMETER ListeningAddress
-Change this to the listening IP address you want to set the forwarding to 
+  #Change this to the listening IP address you want to set the forwarding to 
 
 PARAMETER Network
-Change this to the target network you're working on i.e 192.168.0 
+  #Change this to the target network you're working on i.e 192.168.0 
 
 Script execution example
-.\Ipivot.ps1 -ConnectingPort 9080 -ListeningPort 9999 -Network 127.0.0 -ListeningAddress 127.0.0.1
+  .\Ipivot.ps1 -ConnectingPort 9080 -ListeningPort 9999 -Network 127.0.0 -ListeningAddress 127.0.0.1
 
 #Change this in the script to determine the network range or leave as default depending on your needs
 [int[]]$HostRange = 1..254
