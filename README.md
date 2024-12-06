@@ -15,7 +15,7 @@
                             ##               # #    # #                       
                             ##                  ####   2.0
                         
-IPIVOT 2.0 - Red Teaming Tool
+    IPIVOT 2.0 - Red Teaming Tool
     By: @fort3 - Fortune Sam Okon
     Description: A little pivoting tool for when your favourite meterpreter shell fails...
     Prequisites: Identify and Gain Initial Foothold on Target as Administrator
@@ -51,7 +51,8 @@ Script execution example
     Set-ExecutionPolicy RemoteSigned -Scope Process
 
 # Example Output:
-![image](https://github.com/user-attachments/assets/2c45cd1f-0415-46b4-b686-5c3a7100fee9)
+![Ipivot 2 0_Parameters_2](https://github.com/user-attachments/assets/ab1cdf83-1713-4908-8f73-be244a837da2)
+
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
 
