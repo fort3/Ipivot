@@ -22,8 +22,9 @@
     
     PS: If you happen to find this tool useful then I wouldn't mind a mention ;)
 
-Instructions for use
-Change the Parameters below dependin on your needs:
+## Instructions for use
+
+Change the Parameters below depending on your needs:
 
 PARAMETER ConnectingPort
 Change this to the connecting port 
