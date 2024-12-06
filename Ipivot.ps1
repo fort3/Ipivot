@@ -142,4 +142,8 @@ foreach ($HostAddress in $HostRange) {
     }
 }
 
+Write-Output "***************************************************************************************************************************"
+Write-Output "Now clearing command history and footprints from powershell saved sessions......."
+
+
 Clear-SavedHistory
