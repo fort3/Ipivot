@@ -55,7 +55,8 @@
     Set-ExecutionPolicy RemoteSigned -Scope Process
 
 # Example Output:
-![Ipivot 2 0_Parameters_2](https://github.com/user-attachments/assets/ab1cdf83-1713-4908-8f73-be244a837da2)
+![Ipivot 2 0_Parameters_5](https://github.com/user-attachments/assets/5b4c8f14-a16f-451f-afcb-560a5cb6a313)
+
 
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
