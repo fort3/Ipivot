@@ -19,7 +19,7 @@ param (
     [int]$ListeningPort = 9999,
     [string]$ListeningAddress = '127.0.0.1',
     [string]$Network = '192.168.0',
-    [int[]]$HostRange = 1..254
+    [int[]]$HostRange = 1..2
 )
 
 Write-Output "
@@ -49,6 +49,63 @@ Write-Output "
  ******************************************************************************* 
  "
 $ErrorActionPreference= 'silentlycontinue'
+
+#Clears the command history, including the saved-to-file history, if applicable.
+# Thank you https://stackoverflow.com/questions/13257775/powershells-clear-history-doesnt-clear-history !!!
+function Clear-SavedHistory {
+    [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
+    param(    
+    )
+    $havePSReadline = ($null -ne (Get-Module -EA SilentlyContinue PSReadline))
+    Write-Verbose "PSReadline present: $havePSReadline"
+    $target = if ($havePSReadline) 
+    { 
+        "entire command history, including from previous sessions" 
+    } 
+    else 
+    { 
+        "command history" 
+    } 
+
+    if (-not $pscmdlet.ShouldProcess($target))
+    {
+        return
+    }
+
+    if ($havePSReadline) 
+    {
+        Clear-Host
+        # Remove PSReadline's saved-history file.
+        if (Test-Path (Get-PSReadlineOption).HistorySavePath) 
+        { 
+            # Abort, if the file for some reason cannot be removed.
+            Remove-Item -EA Stop (Get-PSReadlineOption).HistorySavePath 
+            # To be safe, we recreate the file (empty). 
+            $null = New-Item -Type File -Path (Get-PSReadlineOption).HistorySavePath
+        }
+
+        # Clear PowerShell's own history 
+        Clear-History
+
+        # Clear PSReadline's *session* history. 
+        [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
+
+    } 
+    else
+    { # Without PSReadline, we only have a *session* history.
+        Clear-Host
+
+        # Clear the doskey library's buffer, used pre-PSReadline. 
+        # !! Unfortunately, this requires sending key combination Alt+F7.
+        # Thanks, https://stackoverflow.com/a/13257933/45375
+        $null = [system.reflection.assembly]::loadwithpartialname("System.Windows.Forms")
+        [System.Windows.Forms.SendKeys]::Sendwait('%{F7 2}')
+
+        # Clear PowerShell's own history 
+        Clear-History
+
+    }
+}
 
 #list the network and ports found and apply the forwarding
 $i = 1
@@ -80,6 +137,9 @@ foreach ($HostAddress in $HostRange) {
             $socket.Close() 
         } else { 
             "$ip port $ConnectingPort is not open "
+            
         }
     }
 }
+
+Clear-SavedHistory
