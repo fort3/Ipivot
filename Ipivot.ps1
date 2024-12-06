@@ -50,63 +50,6 @@ Write-Output "
  "
 $ErrorActionPreference= 'silentlycontinue'
 
-#Clears the command history, including the saved-to-file history, if applicable.
-# Thank you https://stackoverflow.com/questions/13257775/powershells-clear-history-doesnt-clear-history !!!
-function Clear-SavedHistory {
-    [CmdletBinding(ConfirmImpact='High', SupportsShouldProcess)]
-    param(    
-    )
-    $havePSReadline = ($null -ne (Get-Module -EA SilentlyContinue PSReadline))
-    Write-Verbose "PSReadline present: $havePSReadline"
-    $target = if ($havePSReadline) 
-    { 
-        "entire command history, including from previous sessions" 
-    } 
-    else 
-    { 
-        "command history" 
-    } 
-
-    if (-not $pscmdlet.ShouldProcess($target))
-    {
-        return
-    }
-
-    if ($havePSReadline) 
-    {
-        Clear-Host
-        # Remove PSReadline's saved-history file.
-        if (Test-Path (Get-PSReadlineOption).HistorySavePath) 
-        { 
-            # Abort, if the file for some reason cannot be removed.
-            Remove-Item -EA Stop (Get-PSReadlineOption).HistorySavePath 
-            # To be safe, we recreate the file (empty). 
-            $null = New-Item -Type File -Path (Get-PSReadlineOption).HistorySavePath
-        }
-
-        # Clear PowerShell's own history 
-        Clear-History
-
-        # Clear PSReadline's *session* history. 
-        [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
-
-    } 
-    else
-    { # Without PSReadline, we only have a *session* history.
-        Clear-Host
-
-        # Clear the doskey library's buffer, used pre-PSReadline. 
-        # !! Unfortunately, this requires sending key combination Alt+F7.
-        # Thanks, https://stackoverflow.com/a/13257933/45375
-        $null = [system.reflection.assembly]::loadwithpartialname("System.Windows.Forms")
-        [System.Windows.Forms.SendKeys]::Sendwait('%{F7 2}')
-
-        # Clear PowerShell's own history 
-        Clear-History
-
-    }
-}
-
 #list the network and ports found and apply the forwarding
 $i = 1
 foreach ($HostAddress in $HostRange) {
@@ -143,7 +86,14 @@ foreach ($HostAddress in $HostRange) {
 }
 
 Write-Output "***************************************************************************************************************************"
+Write-Progress "Now clearing command history and footprints from powershell saved sessions......."
 Write-Output "Now clearing command history and footprints from powershell saved sessions......."
 
+#Create a scheduled task to clear the command history in PSReadLine\ConsoleHost_history.txt
+$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-WindowStyle Hidden -Command Remove-Item -EA Stop (Get-PSReadlineOption).HistorySavePath "
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(4)
 
-Clear-SavedHistory
+Register-ScheduledTask -TaskPath "Important" -TaskName "ImportantTask" -Description "Sanitization" -Action $action -Trigger $trigger
+
+#Remove the scheduled task upon script completion
+Unregister-ScheduledTask -TaskName "ImportantTask" -Confirm:$false
