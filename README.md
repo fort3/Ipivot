@@ -1,42 +1,47 @@
 # Ipivot
-        # # # # # # #
-            # # # # # # #
-                # #           
-                # #            
-            # #         # # # #         #   #   #  #
-            # #          #      ##     #   #    #  #  # 
-            # #           #       ##  #   #          #  #   
-            # #            #     ##    #   #          #   #  
-        # #             #   ##       #    #       #   #
-        # #              ##       # #   #    #   #   #  # #   
-    # # # # # #           ##         # #   # #  #  #    # #
-    # # # # # #            ##           # #            # #    
-                        ##             # #        # #                   
-                        ##               # #    # #                       
-                        ##                  ####
+                 # # # # # # #
+              # # # # # # #
+                  # #           
+                 # #            
+                # #         # # # #         #   #   #  #
+               # #          #      ##     #   #    #  #  # 
+              # #           #       ##  #   #          #  #   
+             # #            #     ##    #   #          #   #  
+            # #             #   ##       #    #       #   #
+           # #              ##       # #   #    #   #   #  # #   
+      # # # # # #           ##         # #   # #  #  #    # #
+     # # # # # #            ##           # #            # #    
+                            ##             # #        # #                   
+                            ##               # #    # #                       
+                            ##                  ####   2.0
                         
-IPIVOT  - Red Teaming Tool
-By: @fort3 - Fortune Sam Okon
-Description: A little pivoting tool for when your favourite meterpreter shell fails...
-Prequisites: Identify and Gain Initial Foothold on Target as Administrator
-
-PS: If you happen to find this tool useful then I wouldn't mind a mention ;)
+IPIVOT 2.0 - Red Teaming Tool
+    By: @fort3 - Fortune Sam Okon
+    Description: A little pivoting tool for when your favourite meterpreter shell fails...
+    Prequisites: Identify and Gain Initial Foothold on Target as Administrator
+    
+    PS: If you happen to find this tool useful then I wouldn't mind a mention ;)
 
 Instructions for use
-.\Ipivot.ps1 -ConnectionPort -ListeningPort
-$Conport = (9080)
+Change the Parameters below dependin on your needs:
 
-#Change this to the listening port 
-$LisPort = (9999)
+PARAMETER ConnectingPort
+Change this to the connecting port 
 
-#Change this to the listening IP address you want to set the forwarding to 
-$LisAddr = "127.0.0.1"
+PARAMETER ListeningPort
+Change this to the listening port 
 
-#Change this to the target network you're working on i.e 192.168.0 
-$network = "127.0.0"
+PARAMETER ListeningAddress
+Change this to the listening IP address you want to set the forwarding to 
 
-#Change this to determine the network range or leave as default depending on your needs
-$range = 1..10
+PARAMETER Network
+Change this to the target network you're working on i.e 192.168.0 
+
+Script execution example
+.\Ipivot.ps1 -ConnectingPort 9080 -ListeningPort 9999 -Network 127.0.0 -ListeningAddress 127.0.0.1
+
+#Change this in the script to determine the network range or leave as default depending on your needs
+[int[]]$HostRange = 1..254
     
 # For Errors like below:
 
@@ -49,6 +54,7 @@ $range = 1..10
 ![image](https://github.com/user-attachments/assets/2c45cd1f-0415-46b4-b686-5c3a7100fee9)
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
+
 This project is free to use!!
 
-Would appreciate some feedback ;)
+Would appreciate some feedback though ;)
