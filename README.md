@@ -57,6 +57,8 @@
 # Example Output:
 ![Ipivot 2 0_Parameters_2](https://github.com/user-attachments/assets/ab1cdf83-1713-4908-8f73-be244a837da2)
 
+# CAUTION
+As this tool performs a high impact action like clearing the command history and PSReadline sessions and file, you will asked to confirm this action.
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
 
