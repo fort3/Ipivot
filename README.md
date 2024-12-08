@@ -55,7 +55,8 @@
     Set-ExecutionPolicy RemoteSigned -Scope Process
 
 # Example Output:
-![Ipivot 2 0_Parameters_2](https://github.com/user-attachments/assets/ab1cdf83-1713-4908-8f73-be244a837da2)
+![Ipivot 2 0_Parameters_5](https://github.com/user-attachments/assets/5b4c8f14-a16f-451f-afcb-560a5cb6a313)
+
 
 # CAUTION
 As this tool performs a high impact action like clearing the command history and PSReadline sessions and file, you will asked to confirm this action.
