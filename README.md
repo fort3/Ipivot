@@ -20,7 +20,7 @@
         @TrimarcJake - Jake Hildreth
     Description: A little pivoting tool for when your favourite meterpreter shell fails...
     Prequisites: Identify and Gain Initial Foothold on Target as Administrator
-    Addition: Creates a scheduled task to clear the command history in PSReadLine\ConsoleHost_history.txt
+    Addition: Clear the command history in PSReadLine\ConsoleHost_history.txt and sessions
     
     PS: If you happen to find this tool useful then I wouldn't mind a mention ;)
 
