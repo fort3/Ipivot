@@ -59,7 +59,8 @@
 
 
 # CAUTION
-As this tool performs a high impact action like clearing the command history and PSReadline sessions and file, you will asked to confirm this action.
+As this tool performs a high impact action like clearing the command history and PSReadline sessions and file, you will be asked to confirm this action with a prompt.
+![Ipivot 2 0_Parameters_3](https://github.com/user-attachments/assets/2acd0d89-770d-4b24-9033-3299b5c5b044)
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
 
