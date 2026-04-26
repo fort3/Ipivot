@@ -64,6 +64,8 @@ As this tool performs a high impact action like clearing the command history and
 
 DISCLAIMER: Thoughts, Opinions and the Information in this script is strictly for educational purposes alone and use of any code or technique for unlawful or unauthorized activities is strictly prohibited.
 
-This project is free to use!!
+TThis project is licensed under the MIT License.
+
+See the LICENSE file for more details.
 
 Would appreciate some feedback though ;)
